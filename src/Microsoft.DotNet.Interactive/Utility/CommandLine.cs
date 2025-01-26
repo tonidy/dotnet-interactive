@@ -115,7 +115,14 @@ public static class CommandLine
         using (var operation = Log.OnEnterAndExit())
         {
             args ??= "";
+            var isUnix = Environment.OSVersion.Platform == PlatformID.Unix;
 
+            if (isUnix) 
+            {
+                command = "/bin/bash";
+                args = $"-c \"source $(conda info --base)/etc/profile.d/conda.sh && {command} {args}\"";
+            }
+      
             var process = new Process
             {
                 StartInfo =
