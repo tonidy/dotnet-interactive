@@ -71,7 +71,11 @@ internal class CondaEnvironment : IJupyterEnvironment
 
     internal static async Task<CommandLineResult> ExecuteAsync(string command, string args, string environmentName = BASE_ENV)
     {
-        return await CommandLine.Execute(CondaPath, $"activate {environmentName}&{command} {args}");
+        var isUnix = Environment.OSVersion.Platform == PlatformID.Unix;
+        var commandSeparator = isUnix ? "&&" : "&";
+        var formattedArgs = $"activate {environmentName} {commandSeparator} {command} {args}";
+
+        return await CommandLine.Execute(CondaPath, formattedArgs);
     }
 
     public async Task<CommandLineResult> ExecuteAsync(string command, string args, DirectoryInfo workingDir = null, TimeSpan? timeout = null)
@@ -81,7 +85,11 @@ internal class CondaEnvironment : IJupyterEnvironment
 
     public Process StartProcess(string command, string args, DirectoryInfo workingDir, Action<string> output = null, Action<string> error = null)
     {
-        return CommandLine.StartProcess(CondaPath, $"activate {Name}&{command} {args}", workingDir, output, error);
+        var isUnix = Environment.OSVersion.Platform == PlatformID.Unix;
+        var commandSeparator = isUnix ? "&&" : "&";
+        args = $"activate {Name} {commandSeparator} {command} {args}";
+
+        return CommandLine.StartProcess(CondaPath, args, workingDir, output, error);
     }
 
     private static string GetCondaPath()
