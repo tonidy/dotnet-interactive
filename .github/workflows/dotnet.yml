@@ -6,10 +6,11 @@ name: .NET
 on:
   push:
     branches:
-    - main
-    - conda-cuk
+      - main
+      - conda-cuk
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,7 +24,7 @@ jobs:
       with:
         dotnet-version: 9.0.x
 
-     # Cache dependencies
+    # Cache dependencies
     - name: Cache NuGet packages
       uses: actions/cache@v3
       with:
@@ -37,6 +38,11 @@ jobs:
 
     - name: Build
       run: |
-        pushd src/Microsoft.DotNet.Interactive.Jupyter && dotnet build --no-restore && popd
-        pushd src/Microsoft.DotNet.Interactive && dotnet build --no-restore && popd
+        pushd src/Microsoft.DotNet.Interactive.Jupyter && dotnet build --no-restore --output ../../artifacts/Microsoft.DotNet.Interactive.Jupyter && popd
+        pushd src/Microsoft.DotNet.Interactive && dotnet build --no-restore --output ../../artifacts/Microsoft.DotNet.Interactive && popd
 
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: artifacts
