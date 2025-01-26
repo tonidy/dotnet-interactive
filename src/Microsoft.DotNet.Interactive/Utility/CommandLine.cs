@@ -115,6 +115,8 @@ public static class CommandLine
         using (var operation = Log.OnEnterAndExit())
         {
             args ??= "";
+            var isUnix = Environment.OSVersion.Platform == PlatformID.Unix;
+            
             if (isUnix)
             {
                 var originalCommand = command;
