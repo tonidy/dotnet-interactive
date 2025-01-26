@@ -120,7 +120,7 @@ public static class CommandLine
             if (isUnix) 
             {
                 command = "/bin/bash";
-                args = $"-c \"source $(conda info --base)/etc/profile.d/conda.sh && {command} {args}\"";
+                args = $"-c \"source $(conda info --base)/etc/profile.d/conda.sh && {command} {args.Replace("\"", "\\\"")}\"";
             }
       
             var process = new Process
