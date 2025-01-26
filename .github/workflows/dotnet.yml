@@ -39,13 +39,14 @@ jobs:
     - name: Build
       run: |
         pushd src/Microsoft.DotNet.Interactive.Jupyter && dotnet build --no-restore --output ../../artifacts/Microsoft.DotNet.Interactive.Jupyter && popd
-        pushd src/Microsoft.DotNet.Interactive && dotnet build --no-restore --output ../../artifacts/Microsoft.DotNet.Interactive && popd
+    
+    # pushd src/Microsoft.DotNet.Interactive && dotnet build --no-restore --output ../../artifacts/Microsoft.DotNet.Interactive && popd
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: artifacts
-        compression: 7
+        compression-level: 8
 
 # trigger
