@@ -41,6 +41,7 @@ internal class CondaEnvironment : IJupyterEnvironment
 
     private static async Task<IReadOnlyCollection<string>> DiscoverEnvironmentNamesAsync()
     {
+        Log.Info("DiscoverEnvironmentNamesAsync");
         var commandLineResult = await ExecuteAsync("conda", "env list --json");
 
         if (commandLineResult.ExitCode is 0)
@@ -71,16 +72,26 @@ internal class CondaEnvironment : IJupyterEnvironment
 
     internal static async Task<CommandLineResult> ExecuteAsync(string command, string args, string environmentName = BASE_ENV)
     {
+        Log.Info("Conda on path: {x}", CondaPath);
+        Log.Info("Command: {x}", command);
+        Log.Info("Args: {x}", args);
+        Log.Info("Env: {x}", environmentName);
         return await CommandLine.Execute(CondaPath, $"activate {environmentName}&{command} {args}");
     }
 
     public async Task<CommandLineResult> ExecuteAsync(string command, string args, DirectoryInfo workingDir = null, TimeSpan? timeout = null)
     {
+        Log.Info("Conda on path: {x}", CondaPath);
+        Log.Info("Command: {x}", command);
+        Log.Info("Args: {x}", args);
         return await ExecuteAsync(command, args, Name);
     }
 
     public Process StartProcess(string command, string args, DirectoryInfo workingDir, Action<string> output = null, Action<string> error = null)
     {
+        Log.Info("Working Dir: {x}", workingDir);
+        Log.Info("Command: {x}", command);
+        Log.Info("Args: {x}", args);
         return CommandLine.StartProcess(CondaPath, $"activate {Name}&{command} {args}", workingDir, output, error);
     }
 
