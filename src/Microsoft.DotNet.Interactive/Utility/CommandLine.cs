@@ -115,12 +115,15 @@ public static class CommandLine
         using (var operation = Log.OnEnterAndExit())
         {
             args ??= "";
-            var isUnix = Environment.OSVersion.Platform == PlatformID.Unix;
-
-            if (isUnix) 
+            if (isUnix)
             {
+                var originalCommand = command;
+
+                // Use /bin/bash for Unix systems
                 command = "/bin/bash";
-                args = $"-c \"source $(conda info --base)/etc/profile.d/conda.sh && {command} {args.Replace("\"", "\\\"")}\"";
+
+                // Properly escape quotes in the arguments and build the final args
+                args = $"-c \"source $(conda info --base)/etc/profile.d/conda.sh && {originalCommand} {args.Replace("\"", "\\\"")}\"";
             }
       
             var process = new Process
