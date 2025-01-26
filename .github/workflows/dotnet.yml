@@ -46,4 +46,6 @@ jobs:
       with:
         name: build-artifacts
         path: artifacts
-        compression: 9
+        compression: 7
+
+# trigger
