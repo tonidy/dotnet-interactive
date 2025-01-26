@@ -37,6 +37,6 @@ jobs:
 
     - name: Build
       run: |
-        pushd Microsoft.DotNet.Interactive.Jupyter && dotnet build --no-restore && popd
-        pushd Microsoft.DotNet.Interactive && dotnet build --no-restore && popd
+        pushd src/Microsoft.DotNet.Interactive.Jupyter && dotnet build --no-restore && popd
+        pushd src/Microsoft.DotNet.Interactive && dotnet build --no-restore && popd
 
